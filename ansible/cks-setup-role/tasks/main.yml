@@ -1,0 +1,21 @@
+---
+# tasks file for cks-setup-role
+- import_tasks: selinux.yml
+  tags:
+    - cks-setup
+    - cks-setup-selinux
+
+- import_tasks: swap.yml
+  tags:
+    - cks-setup
+    - cks-setup-swap    
+
+- import_tasks: ohmyzsh.yml
+  tags:
+    - cks-setup
+    - cks-setup-ohmyzsh
+
+- import_tasks: k8s.yml
+  tags:
+    - cks-setup
+    - cks-setup-k8s

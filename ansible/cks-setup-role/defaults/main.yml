@@ -1,0 +1,2 @@
+---
+ohmyzsh_user: "{{ ansible_ssh_user }}"

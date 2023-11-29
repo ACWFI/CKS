@@ -1,0 +1,33 @@
+---
+- name: Install Zsh
+  package:
+    name: zsh
+    state: present
+
+- name: Set Zsh as the default shell
+  command: chsh -s /bin/zsh "{{ ohmyzsh_user }}"
+
+- name: Clone Oh My Zsh repository
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    version: master
+
+- name: Copy the Oh My Zsh configuration
+  template:
+    src: zshrc.j2
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+
+- name: Change ownership of Oh My Zsh files
+  file:
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    state: directory
+    owner: "{{ ohmyzsh_user }}"
+    group: "{{ ohmyzsh_user }}"
+
+- name: Change ownership of Zsh configuration
+  file:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    state: touch
+    owner: "{{ ohmyzsh_user }}"
+    group: "{{ ohmyzsh_user }}"

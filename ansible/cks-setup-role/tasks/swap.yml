@@ -1,0 +1,24 @@
+- name: Disable swap
+  command: swapoff -a
+  ignore_errors: true  # Ignore errors in case swap is already disabled
+
+- name: Remove swap entries from /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^.*swap.*$'
+    state: absent
+
+- name: Copy k8s.conf file
+  copy:
+    src: k8s.conf
+    dest: /etc/sysctl.d/k8s.conf
+  notify: Reload sysctl
+
+- name: Load kernel modules
+  command: modprobe {{ item }}
+  with_items:
+    - br_netfilter
+    - overlay
+
+# - name: Reboot hosts
+#   reboot:
